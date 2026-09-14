@@ -10,6 +10,8 @@ The browser check passed in Edge: changing numeric controls, autosave, approving
 
 The handoff test starts a separate Node process with only the project directory and shared contract. It reads purpose, decisions, history and remaining work, updates a parameter through the revision-checked API, and preserves the documentation. This is a reproducible handoff simulation, not a claim that a separate Claude Code session was run.
 
+A separate Codex agent with no inherited conversation then performed the actual handoff acceptance check. It recovered the bracket's purpose, dimensions, two holes and unverified load assumptions solely from repository documentation. In a copy outside the repository it changed the foot from 30 to 32 mm through Store.save, added a reasoned history entry, and read the result through a new Store. It verified bounds of 50 × 40 × 32 mm, unchanged upright panel and holes, rejection of a stale revision with 409, valid foot boundaries 15 and 80 mm, and rejection of 81 mm. The original project hash remained unchanged. No blockers were found; its documentation clarification is included in the project contract. This check used Codex, not a Claude Code session.
+
 ## Live Fusion
 
 The generated translator was executed in Autodesk Fusion on a separate validation document and then on the exact approved speaker snapshot `82fabd6f-8acd-4e3b-820f-bffe9f2139e8`.

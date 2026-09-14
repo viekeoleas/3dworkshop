@@ -18,6 +18,8 @@ This MVP supports compositions of boxes and perforated panels. A new shape that 
 
 GET `/api/projects` returns project definitions and revision hashes. POST `/api/projects/ID/draft` with `{revision,values}` performs validation and optimistic concurrency checking. A conflict requires reading the current file and reconciling changes, rather than repeating a stale write. Disk writes use a temporary file and rename.
 
+When a parameter edit also needs a history entry, save the values first, reread the resulting project.json, append the entry to documentation.history, then reload the project in the browser. Metadata currently uses direct file editing, so perform these steps sequentially while the user is not changing controls. Preserve the newly saved values when writing the metadata.
+
 POST `/api/projects/ID/approve` with `{revision}` is the user's approval action. It writes a UUID-named version containing a snapshot of the complete project and resolved geometry plus a SHA-256 hash. Treat version files as immutable. GET `/api/projects/ID/versions` verifies hashes. Editing or deleting approved files manually invalidates that guarantee; hashes detect accidental alteration, not a malicious writer with filesystem access.
 
 Copy the complete project directory, including versions and transfers, for handoff. No project-to-project synchronization exists. Keep credentials and machine-specific paths outside this repository.
