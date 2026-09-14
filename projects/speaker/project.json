@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 2,
+  "id": "speaker",
+  "name": "корпус динамика",
+  "description": "Корпус ESP-проекта с отверстием динамика",
+  "units": "mm",
+  "parameters": [
+    {
+      "key": "width",
+      "label": "Ширина",
+      "min": 20,
+      "max": 180,
+      "step": 1,
+      "unit": "мм"
+    },
+    {
+      "key": "depth",
+      "label": "Глубина",
+      "min": 20,
+      "max": 180,
+      "step": 1,
+      "unit": "мм"
+    },
+    {
+      "key": "height",
+      "label": "Высота",
+      "min": 20,
+      "max": 180,
+      "step": 1,
+      "unit": "мм"
+    },
+    {
+      "key": "wall",
+      "label": "Стенка",
+      "min": 1,
+      "max": 12,
+      "step": 0.1,
+      "unit": "мм"
+    },
+    {
+      "key": "bottom",
+      "label": "Дно",
+      "min": 1,
+      "max": 12,
+      "step": 0.1,
+      "unit": "мм"
+    },
+    {
+      "key": "diameter",
+      "label": "Отверстие динамика",
+      "min": 10,
+      "max": 165,
+      "step": 0.5,
+      "unit": "мм"
+    },
+    {
+      "key": "flange",
+      "label": "Выступ фланца",
+      "min": 0.5,
+      "max": 10,
+      "step": 0.1,
+      "unit": "мм"
+    },
+    {
+      "key": "flangeHeight",
+      "label": "Высота фланца",
+      "min": 1,
+      "max": 12,
+      "step": 0.1,
+      "unit": "мм"
+    }
+  ],
+  "values": {
+    "width": 170,
+    "depth": 170,
+    "height": 180,
+    "wall": 4,
+    "bottom": 4,
+    "diameter": 150,
+    "flange": 5,
+    "flangeHeight": 5
+  },
+  "constraints": [
+    {
+      "left": ["*", 2, "wall"],
+      "op": "<",
+      "right": "width",
+      "message": "Стенки перекрывают ширину"
+    },
+    {
+      "left": ["*", 2, "wall"],
+      "op": "<",
+      "right": "depth",
+      "message": "Стенки перекрывают глубину"
+    },
+    {
+      "left": "bottom",
+      "op": "<",
+      "right": "height",
+      "message": "Дно должно быть ниже верхней кромки"
+    },
+    {
+      "left": "flangeHeight",
+      "op": "<=",
+      "right": "height",
+      "message": "Фланец выше корпуса"
+    }
+  ],
+  "geometry": [
+    {
+      "type": "box",
+      "name": "Дно",
+      "size": ["width", "bottom", "depth"],
+      "origin": [0, 0, 0]
+    },
+    {
+      "type": "box",
+      "name": "Левая стенка",
+      "size": ["wall", ["-", "height", "bottom"], "depth"],
+      "origin": [0, "bottom", 0]
+    },
+    {
+      "type": "box",
+      "name": "Правая стенка",
+      "size": ["wall", ["-", "height", "bottom"], "depth"],
+      "origin": [["-", "width", "wall"], "bottom", 0]
+    },
+    {
+      "type": "box",
+      "name": "Задняя стенка",
+      "size": [
+        ["-", "width", ["*", 2, "wall"]],
+        ["-", "height", "bottom"],
+        "wall"
+      ],
+      "origin": ["wall", "bottom", 0]
+    },
+    {
+      "type": "box",
+      "name": "Фланец слева",
+      "size": ["flange", "flangeHeight", ["+", "depth", ["*", 2, "flange"]]],
+      "origin": [["-", 0, "flange"], 0, ["-", 0, "flange"]]
+    },
+    {
+      "type": "box",
+      "name": "Фланец справа",
+      "size": ["flange", "flangeHeight", ["+", "depth", ["*", 2, "flange"]]],
+      "origin": ["width", 0, ["-", 0, "flange"]]
+    },
+    {
+      "type": "box",
+      "name": "Фланец сзади",
+      "size": ["width", "flangeHeight", "flange"],
+      "origin": [0, 0, ["-", 0, "flange"]]
+    },
+    {
+      "type": "box",
+      "name": "Фланец спереди",
+      "size": ["width", "flangeHeight", "flange"],
+      "origin": [0, 0, "depth"]
+    },
+    {
+      "type": "panel",
+      "name": "Передняя стенка",
+      "size": [
+        ["-", "width", ["*", 2, "wall"]],
+        ["-", "height", "bottom"],
+        "wall"
+      ],
+      "origin": ["wall", "bottom", ["-", "depth", "wall"]],
+      "holes": [
+        {
+          "x": ["-", ["/", "width", 2], "wall"],
+          "y": ["-", ["/", "height", 2], "bottom"],
+          "radius": ["/", "diameter", 2]
+        }
+      ]
+    }
+  ],
+  "documentation": {
+    "purpose": "Отдельный корпус для динамика и электроники ESP. Верх открыт.",
+    "decisions": [
+      "Единицы — миллиметры.",
+      "Проекты независимы; изменения не синхронизируются.",
+      "Фланец 5×5 мм входит в общую высоту 180 мм. Кожух опирается на него.",
+      "Номинальная сборка: зазор 1 мм по сторонам и сверху, общая высота 185 мм. Только справочная информация."
+    ],
+    "history": ["Создан по согласованному чертежу."],
+    "todo": [
+      "Проверить размеры реального динамика, крепёж и разъёмы перед печатью."
+    ],
+    "reference": "Исходная модель Fusion: корпус динамика, версия 1."
+  }
+}

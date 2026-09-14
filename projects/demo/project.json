@@ -1,1 +1,102 @@
-{"schemaVersion":1,"id":"demo","name":"Первый корпус","description":"Демонстрационный проект · открытая коробка","units":"mm","dimensions":{"width":100,"depth":80,"height":60,"wall":4},"updatedAt":"2026-09-14"}
+{
+  "schemaVersion": 2,
+  "id": "demo",
+  "name": "Крепёжный уголок",
+  "description": "Пример детали с другой схемой параметров",
+  "units": "mm",
+  "parameters": [
+    {
+      "key": "width",
+      "label": "Ширина",
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "unit": "мм"
+    },
+    {
+      "key": "height",
+      "label": "Высота",
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "unit": "мм"
+    },
+    {
+      "key": "foot",
+      "label": "Длина основания",
+      "min": 15,
+      "max": 80,
+      "step": 1,
+      "unit": "мм"
+    },
+    {
+      "key": "thickness",
+      "label": "Толщина",
+      "min": 2,
+      "max": 8,
+      "step": 0.5,
+      "unit": "мм"
+    },
+    {
+      "key": "hole",
+      "label": "Крепёжное отверстие",
+      "min": 2,
+      "max": 10,
+      "step": 0.5,
+      "unit": "мм"
+    }
+  ],
+  "values": {
+    "width": 50,
+    "height": 40,
+    "foot": 30,
+    "thickness": 4,
+    "hole": 5
+  },
+  "constraints": [
+    {
+      "left": "thickness",
+      "op": "<",
+      "right": "height",
+      "message": "Толщина должна быть меньше высоты"
+    }
+  ],
+  "geometry": [
+    {
+      "type": "box",
+      "name": "Основание",
+      "size": ["width", "thickness", "foot"],
+      "origin": [0, 0, 0]
+    },
+    {
+      "type": "panel",
+      "name": "Вертикальная полка",
+      "size": ["width", ["-", "height", "thickness"], "thickness"],
+      "origin": [0, "thickness", 0],
+      "holes": [
+        {
+          "x": ["/", "width", 4],
+          "y": ["/", ["-", "height", "thickness"], 2],
+          "radius": ["/", "hole", 2]
+        },
+        {
+          "x": ["*", "width", 0.75],
+          "y": ["/", ["-", "height", "thickness"], 2],
+          "radius": ["/", "hole", 2]
+        }
+      ]
+    }
+  ],
+  "documentation": {
+    "purpose": "Учебный крепёжный уголок для демонстрации разных схем параметров.",
+    "decisions": [
+      "Два отверстия в вертикальной полке.",
+      "Материал, нагрузки и крепёж не рассчитаны."
+    ],
+    "history": ["Добавлен как пример независимой детали."],
+    "todo": [
+      "Для рабочего применения уточнить нагрузку и крепление основания."
+    ],
+    "reference": "Пример мастерской, не связан с кожухом и динамиком."
+  }
+}

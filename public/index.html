@@ -1,3 +1,85 @@
-<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>3D-мастерская</title><link rel="stylesheet" href="/style.css"><script type="importmap">{"imports":{"three":"/three.js"}}</script></head><body>
-<aside><div class="brand"><span class="logo">3D</span> Мастерская</div><div class="subtitle">Локальное пространство деталей</div><div class="section">ПРОЕКТЫ <span id="count">0</span></div><nav id="projects" aria-label="Проекты"></nav><div class="aside-bottom"><span class="dot"></span> На этом компьютере<br><small>Codex + Claude Code</small></div></aside>
-<main><header><div><div class="eyebrow">РАБОЧЕЕ ПРОСТРАНСТВО</div><h1 id="title">Открываем мастерскую…</h1><p id="description"></p></div><span class="badge">На диске</span></header><div id="error" role="alert" hidden></div><section class="viewport" aria-label="3D-просмотр"><div class="view-label">ПЕРСПЕКТИВА <span>• мм</span></div><div id="canvas"></div><div class="hint">Потяни, чтобы вращать · Колесо — масштаб</div><button id="reset">Вернуть вид</button></section><footer><div><span class="label">ГАБАРИТЫ</span><strong id="dimensions">—</strong></div><div><span class="label">СТЕНКА</span><strong id="wall">—</strong></div><div><span class="label">ХРАНЕНИЕ</span><strong>Файлы проекта</strong></div></footer><p class="note">Изменения модели выполняет агент. Проекты сохраняются в общей папке мастерской.</p></main><script type="module" src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>3D Workshop</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="importmap">
+      { "imports": { "three": "/three.js" } }
+    </script>
+  </head>
+  <body>
+    <aside>
+      <div class="brand"><span class="logo">3D</span> Workshop</div>
+      <p class="subtitle">Ваша мастерская деталей</p>
+      <div class="section">ПРОЕКТЫ</div>
+      <nav id="projects"></nav>
+    </aside>
+    <main>
+      <header>
+        <div>
+          <div class="eyebrow">ЛОКАЛЬНАЯ МАСТЕРСКАЯ</div>
+          <h1 id="title">Загрузка…</h1>
+          <p id="status" role="status"></p>
+        </div>
+        <button id="reload">Загрузить с диска</button>
+      </header>
+      <div id="error" role="alert" hidden></div>
+      <div class="workspace">
+        <section>
+          <div class="toolbar">
+            <button data-view="iso">Общий вид</button
+            ><button data-view="front">Спереди</button
+            ><button data-view="top">Сверху</button
+            ><label><input id="section" type="checkbox" /> Разрез</label
+            ><input
+              id="cut"
+              aria-label="Положение разреза"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+            />
+          </div>
+          <div class="viewport">
+            <div id="canvas"></div>
+            <div class="hint">Вращение — мышью · Масштаб — колёсиком</div>
+          </div>
+          <footer>
+            <div>
+              <span class="label">ГАБАРИТЫ · Ш × Г × В</span
+              ><strong id="bounds"></strong>
+            </div>
+            <div>
+              <span class="label">ЕДИНИЦЫ</span><strong>миллиметры</strong>
+            </div>
+          </footer>
+          <p id="print" class="note"></p>
+          <p class="note">
+            Разрез показывает внутреннее устройство; поверхность среза не
+            залита.
+          </p>
+        </section>
+        <section class="panel">
+          <label for="versions">Черновик и версии</label
+          ><select id="versions">
+            <option value="">Черновик</option>
+          </select>
+          <div id="params"></div>
+          <button id="approve" class="primary">Утвердить версию</button>
+          <p class="note">
+            Утверждённая версия сохраняется отдельно. Для переноса в Fusion
+            напишите агенту название проекта и версию.
+          </p>
+          <p id="versionInfo" class="note"></p>
+        </section>
+      </div>
+      <details open>
+        <summary>Документация детали</summary>
+        <div id="docs"></div>
+      </details>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
