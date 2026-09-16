@@ -87,9 +87,20 @@ test("seed bounds and circular cutout volumes match CAD", async () => {
     ["cover", 625216],
     ["speaker", 529870.1652942279],
   ]) {
-    const p = JSON.parse(
-      await readFile(new URL(`./projects/${id}/project.json`, import.meta.url)),
+    // Baseline CAD checks use immutable approved snapshots, not user-edited drafts.
+    const baselineId =
+      id === "cover"
+        ? "018d0dcd-b8dc-4fdd-8bc6-d51a8644e7c7"
+        : "82fabd6f-8acd-4e3b-820f-bffe9f2139e8";
+    const baseline = JSON.parse(
+      await readFile(
+        new URL(
+          `./projects/${id}/versions/${baselineId}.json`,
+          import.meta.url,
+        ),
+      ),
     );
+    const p = baseline.snapshot.project;
     const g = resolve(p);
     assert.deepEqual(g.bounds.size, [180, 180, 180]);
     const volume = g.parts.reduce(
